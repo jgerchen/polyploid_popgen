@@ -37,7 +37,7 @@ Output file containing histogram with summed-up numbers of counts of samples tha
 
 Minimum number of samples above cutoff for a site to be masked
 
-**-l, locinumber**
+**-l, --locinumber**
 
 Number of loci in the VCF file. Ideally this should be the exact number from the VCF file. If the number is higher, the program will need more memory, if it is lower it will have to reallocate memory to the internal genotype array, which is computationally inefficient.
 For a gzipped VCF file, this can be determined using 
