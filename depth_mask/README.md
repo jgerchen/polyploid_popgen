@@ -47,5 +47,5 @@ zcat vcf_file.vcf.gz | grep -c "^[^#]"
 For an unzipped VCF file it would be 
 
 ```
-grep -c "^[^#]" vcf_file.vcf.gz
+grep -c "^[^#]" vcf_file.vcf
 ```
