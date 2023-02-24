@@ -40,10 +40,12 @@ Minimum number of samples above cutoff for a site to be masked
 **-l, locinumber**
 
 Number of loci in the VCF file. Ideally this should be the exact number from the VCF file. If the number is higher, the program will need more memory, if it is lower it will have to reallocate memory to the internal genotype array, which computationally inefficient.
-This can be determined using 
+For a gzipped VCF file, this can be determined using 
 ```
-zcat vcf_file.vcf.gz | egrep -c
+zcat vcf_file.vcf.gz | grep -c "^[^#]"
 ```
+For an unzipped VCF file it would be 
 
-
-
+```
+grep -c "^[^#]" vcf_file.vcf.gz
+```
