@@ -70,5 +70,6 @@ Then you can use bedops to merge adjacent variants into continuous stetches (whi
 ```
 bedops -m output.bed > output_merged.bed
 ```
+### Notes
 
-
+Depths are internally stored in a large Numpy Array. To increase memory efficiency, values are in the uint16 format, which limits the maximum total depth at a site to 65536 for each sample.
