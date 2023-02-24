@@ -58,17 +58,17 @@ python3 make_depth_mask.py -v vcf_file.vcf.gz -o out_file.tsv -c counts_out.tsv 
 
 Based on the histogram in hist_out.tsv (determined by -p), you may decide to choose a different value for -n. For this it is not necessary to rerun the script, but you can just filter the counts_out.tsv file using the following code (here for n>=15)
 ```
-awk '{if ($3>=15) print $1"\t"$2}'
+awk '{if ($3>=15) print $1"\t"$2}' counts_out.tsv > out_file_filtered.tsv
 ```
 ### Transforming output files
 
 The output files are a simple list of single genomic positions. You can transfer this into bed format using
 ```
-awk '{printf "%s\t%d\t%d\n" ,$1,($2 - 1),$2}' out_file.tsv > output.bed
+awk '{printf "%s\t%d\t%d\n" ,$1,($2 - 1),$2}' out_file.tsv > out_file.bed
 ```
 Then you can use bedops to merge adjacent variants into continuous stetches (which will be preferable for use with e.g. GATK)
 ```
-bedops -m output.bed > output_merged.bed
+bedops -m out_file.bed > out_file_merged.bed
 ```
 ### Notes
 
