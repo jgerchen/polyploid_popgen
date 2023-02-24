@@ -18,16 +18,27 @@ A vcf file, which can be gzipped (determined if the ending of the file name is .
 ### Parameters
 
 **-v, --vcf**
+
 Input VCF file (gzipped or not)
+
 **-o, --output**
+
 Output file containing sites to be masked (contig and position in columns, tab separated)
+
 **-c, --countout**
+
 Output file containing all sites and the number of samples that are above cutoff for filtering (contig, position and number of samples in columns, tab separated)
+
 **-p, --plothist**
+
 Output file containing histogram with summed-up numbers of counts of samples that are above cutoff for all sites (number of samples and counts in columns, tab separated)
+
 **-n, --nsamples**
+
 Minimum number of samples above cutoff for a site to be masked
+
 **-l, locinumber**
+
 Number of loci in the VCF file. Ideally this should be the exact number from the VCF file. If the number is higher, the program will need more memory, if it is lower it will have to reallocate memory to the internal genotype array, which computationally inefficient.
 This can be determined using 
 ```
