@@ -60,3 +60,15 @@ Based on the histogram in hist_out.tsv (determined by -p), you may decide to cho
 ```
 awk
 ```
+### Transforming output files
+
+The output files are a simple list of single genomic positions. You can transfer this into standard bed format using
+```
+awk
+```
+Then you can use bedops to merge adjacent variants into continuous stetches (which will be preferable for use with e.g. GATK)
+```
+bedops -m output.bed > output_merged.bed
+```
+
+
