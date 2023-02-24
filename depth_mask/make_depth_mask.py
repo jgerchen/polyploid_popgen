@@ -30,6 +30,7 @@ for line in inp_file:
         if line[1]!="#":
             sample_cats=line.strip().split("\t")
             sample_length=len(sample_cats[9:])
+            sample_ids=sample_cats[9:]
 #initialize a large numpy arrays
             data_array=numpy.zeros((nloci,sample_length),dtype=numpy.uint16)
             name_array=numpy.full(nloci, "", dtype=numpy.object)
@@ -51,11 +52,12 @@ for line in inp_file:
         loci_counter+=1
 
 final_array=data_array[:loci_counter]
-data_mean=numpy.mean(final_array)
-data_std=numpy.std(final_array)
+data_mean=numpy.mean(final_array, axis=0)
+data_std=numpy.std(final_array, axis=0)
 cutoff=data_mean+(2*data_std)
 
-print("Mean depth: %s, Standard deviation: %s, Depth cutoff: %s" %(data_mean, data_std, cutoff))
+for sample_it in range(len(sample_ids)):
+    print("Sample %s: Mean depth: %s, Standard deviation: %s, Depth cutoff: %s" %(sample_ids[sample_it],data_mean[sample_it], data_std[sample_it], cutoff[sample_it]))
 
 hist_dict={d:0 for d in range(sample_length+1)}
 
