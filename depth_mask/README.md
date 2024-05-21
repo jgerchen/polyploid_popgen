@@ -39,7 +39,7 @@ Minimum number of samples above cutoff for a site to be masked
 
 **-m, --min_depth**
 
-Minimum depth below which a site is not considered for calculation od mean depth and Stderror
+Minimum depth below which a site is not considered for calculation of mean depth and Stderror
 
 **-l, --locinumber**
 
