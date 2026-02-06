@@ -33,7 +33,7 @@ The script will produce 8 plots in pdf formats, 6 for the GATK INFO stats (FS.pd
 
 An example output file for MQ could look as follows:
 
-![Example plot for MQ](example/MQ.pdf)
+![Example plot for MQ](example/MQ.png)
 
  + The X axis shows the cumulative proportion of the biallelic SNPs after being sorted by the statistic of interest. It is split in 100 windows (by default, can be changed by setting the **--plot_n_windows** parameter)
  + The left Y axis (red lines) shows ts/tv values for each window
