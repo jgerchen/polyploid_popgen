@@ -4,7 +4,7 @@ This script plots transition to transversion ratios against six INFO stats and Q
 
 ## Requirements
 
-The script is written in python and uses [Numpy](https://numpy.org/) and [Matplotlib](https://matplotlib.org/). You can install it for example via conda using 
+The script is written in python and uses [Numpy](https://numpy.org/) and [Matplotlib](https://matplotlib.org/). You can install both of them for example via conda using 
 
 ```
 conda install conda-forge::matplotlib
@@ -28,3 +28,16 @@ Where **vcf_input.vcf.gz** is your vcf file, either bgzipped (file ends with **.
  + **--output_prefix** String, which will be appended to the beginning of all output files
 
 ## Output
+
+The script will produce 8 plots in pdf formats, 6 for the GATK INFO stats (FS.pdf, MQ.pdf, MQRankSum.pdf, QD.pdf, ReadPosRankSum.pdf and SOR.pdf) and 2 for QUAL, one with a regular Y axis (QUAL.pdf) and another one with a logarithmic Y axis scale (QUAL_logY.pdf).
+
+An example output file for MQ could look as follows:
+
+![Example plot for MQ](example/MQ.pdf)
+
+ + The X axis shows the cumulative proportion of the biallelic SNPs after being sorted by the statistic of interest. It is split in 100 windows (by default, can be changed by setting the **--plot_n_windows** parameter)
+ + The left Y axis (red lines) shows ts/tv values for each window
+ + The right Y axis (blue lines) shows the mean value for each window for the statistic of interest
+ + The dotted green line shows the [GATK hard filtering threshold for the INFO score of interest](https://gatk.broadinstitute.org/hc/en-us/articles/360035890471-Hard-filtering-germline-short-variants). Note that the threshold may be either above or below that line, depending on the INFO stat
+
+
