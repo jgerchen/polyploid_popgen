@@ -6,18 +6,18 @@ This script plots transition to transversion ratios against six INFO stats and Q
 
 The script is written in python and uses [Numpy](https://numpy.org/) and [Matplotlib](https://matplotlib.org/). You can install it for example via conda using 
 
-´´´
+```
 conda install conda-forge::matplotlib
 conda install conda-forge::numpy
-´´´
+```
 
 ## Usage
 
 Basic usage is
 
-´´´
+```
 python3 plot_tstv.py --vcf vcf_input.vcf.gz
-´´´
+```
 
 Where **vcf_input.vcf.gz** is your vcf file, either bgzipped (file ends with **.gz**) or uncompressed (file ends with **.vcf**).
 
