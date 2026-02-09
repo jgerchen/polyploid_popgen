@@ -7,7 +7,6 @@ import sys
 
 parser=argparse.ArgumentParser()
 parser.add_argument('--n_sites', default=1000000)
-parser.add_argument('--output_prefix', default="")
 parser.add_argument('--plot_n_windows', default=100)
 parser.add_argument('--vcf')
 
@@ -15,7 +14,6 @@ args=parser.parse_args()
 
 plot_n_windows=int(args.plot_n_windows)
 n_sites=int(args.n_sites)
-output_prefix=args.output_prefix
 vcf_input=args.vcf
 line_counter=0
 
@@ -118,5 +116,5 @@ def plot_tstv(pred_name,pred_out, tstv_values, plot_n_windows, logY, Ythreshold=
 	print("Plotted %s.pdf" % pred_name, file=sys.stderr)
 #plot ts/tv for GATK stats
 for GATK_stat in GATK_index_array:
-	plot_tstv(output_prefix+GATK_stat, X_all[:,GATK_index_array[GATK_stat]], tstv_Y, plot_n_windows, False, GATK_thresholds[GATK_stat])
+	plot_tstv(GATK_stat, X_all[:,GATK_index_array[GATK_stat]], tstv_Y, plot_n_windows, False, GATK_thresholds[GATK_stat])
 plot_tstv(output_prefix+"QUAL_logY", X_all[:,GATK_index_array["QUAL"]], tstv_Y, plot_n_windows, True)
