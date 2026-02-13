@@ -9,15 +9,18 @@ parser.add_argument('-c', '--countout')
 parser.add_argument('-p', '--plothist')
 parser.add_argument('-n', '--nsamples')
 parser.add_argument('-l', '--locinumber')
+parser.add_argument('-m', '--min_depth')
 
 args = parser.parse_args()
 
 vcf_input=args.vcf
 output=args.output
-nsamples=int(args.nsamples)
+nsamples=int(round(float(args.nsamples), 0))
 nloci=int(args.locinumber)
 counts=args.countout
 histcounts=args.plothist
+min_depth=int(args.min_depth)
+
 
 if vcf_input[-3:]==".gz":
     inp_file=gzip.open(vcf_input, 'rt')
@@ -32,14 +35,19 @@ for line in inp_file:
             sample_length=len(sample_cats[9:])
             sample_ids=sample_cats[9:]
 #initialize a large numpy arrays
-            #data_array=numpy.zeros((nloci,sample_length),dtype=numpy.uint16)
-            data_array=numpy.full((nloci,sample_length), numpy.nan ,dtype=numpy.uint16)
+
+#            data_array=numpy.zeros((nloci,sample_length),dtype=numpy.uint16)
+            data_array = numpy.empty((nloci,sample_length),dtype=numpy.uint16)
+         #   data_array.fill(numpy.nan)
+          #  name_array=numpy.full(nloci, "", dtype=numpy.object)
             name_array=numpy.full(nloci, "", dtype=object)
     else:
         if loci_counter==nloci:
             print("Warning: --locinumber is smaller than the actual number of loci in the VCF file. Growing internal data array by 100000 lines. This is computationally inefficient. Avoid this by increasing the value for --locinumber")
-            data_array=numpy.vstack((data_array, numpy.full((100000, sample_length), numpy.nan ,dtype=numpy.uint16)))
-            name_array=numpy.concatenate((name_array, numpy.full(100000, "", dtype=numpy.object)))
+            add_array=numpy.empty((100000, sample_length),dtype=numpy.uint16)
+            add_array.fill(numpy.nan)
+            data_array=numpy.vstack((data_array, add_array))
+            name_array=numpy.concatenate((name_array, numpy.full(100000, "", dtype=object)))
         loc_cats=line.strip().split("\t")
         name_array[loci_counter]=loc_cats[0]+"\t"+loc_cats[1]
         #Do we have to do this for every locus? Maybe yes to be safe.
@@ -50,11 +58,19 @@ for line in inp_file:
             if len(loc_snp_fields)>=loc_info_dp+1:
                 if loc_snp_fields[loc_info_dp]!=".":
                     data_array[loci_counter, i]=numpy.uint16(loc_snp_fields[loc_info_dp])
+                else:
+                    data_array[loci_counter, i]=0
+
         loci_counter+=1
 
-final_array=data_array[:loci_counter]
-data_mean=numpy.mean(final_array, axis=0)
-data_std=numpy.std(final_array, axis=0)
+#final_array=data_array[:loci_counter]
+
+data_mean=numpy.empty(len(sample_ids))
+data_std=numpy.empty(len(sample_ids))
+for sample_column_i in range(len(sample_ids)):
+    column_array=data_array[:loci_counter,sample_column_i]
+    data_mean[sample_column_i]=numpy.mean(column_array[column_array>=min_depth])
+    data_std[sample_column_i]=numpy.std(column_array[column_array>=min_depth])
 cutoff=data_mean+(2*data_std)
 
 for sample_it in range(len(sample_ids)):
@@ -65,7 +81,7 @@ hist_dict={d:0 for d in range(sample_length+1)}
 with open(output,"w") as output_file:
     with open(counts, "w") as count_output:
         for comp_locus in range(loci_counter):
-            depth_count=(final_array[comp_locus]>cutoff).sum()
+            depth_count=(data_array[comp_locus]>cutoff).sum()
             hist_dict[depth_count]+=1
             count_output.write(name_array[comp_locus]+"\t"+str(depth_count)+"\n")
             if depth_count>nsamples:
