@@ -117,4 +117,4 @@ def plot_tstv(pred_name,pred_out, tstv_values, plot_n_windows, logY, Ythreshold=
 #plot ts/tv for GATK stats
 for GATK_stat in GATK_index_array:
 	plot_tstv(GATK_stat, X_all[:,GATK_index_array[GATK_stat]], tstv_Y, plot_n_windows, False, GATK_thresholds[GATK_stat])
-plot_tstv(output_prefix+"QUAL_logY", X_all[:,GATK_index_array["QUAL"]], tstv_Y, plot_n_windows, True)
+plot_tstv("QUAL_logY", X_all[:,GATK_index_array["QUAL"]], tstv_Y, plot_n_windows, True)
