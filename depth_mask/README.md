@@ -11,7 +11,7 @@ Basically, it takes a VCF file as input, determines the mean and standard deviat
 Python3 with NumPy
 
 ### Input files
-A vcf file, which can be gzipped (determined if the ending of the file name is .gz), with snps and invariants both after GATK filtering (filtered, but not removed), but without insertions, deletions and spanning deletion sites (i.e. the sites with *)
+A vcf file, which can be gzipped (determined if the ending of the file name is .gz), with snps and invariants both after GATK filtering, but without insertions, deletions and spanning deletion sites (i.e. the sites with *)
 
 ## Usage
 
