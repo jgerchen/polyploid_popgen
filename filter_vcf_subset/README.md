@@ -75,7 +75,7 @@ Now we can run the magic bcftools command that will look at the REF and ALT colu
 bcftools view -a -o raw_vcf_subset.rh.gtdepth.sub.vcf.gz raw_vcf_subset.rh.gtdepth.vcf.gz
 ```
 
-And now we have our properly subset vcf file on which we can run further filtering steps. Importantly, i**the INFO stats in your VCF file will still be the same as in the raw VCF file for the whole dataset**. This has some consequences for filtering your data:
+And now we have our properly subset vcf file on which we can run further filtering steps. Importantly, **the INFO stats in your VCF file will still be the same as in the raw VCF file for the whole dataset**. This has some consequences for filtering your data:
 
 - For SNPs that were biallelic in the complete dataset this may be actually desirable, because your INFO stats will be based on a greater set of information than your subset alone.
 
