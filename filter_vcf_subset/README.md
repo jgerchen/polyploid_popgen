@@ -97,11 +97,14 @@ As you can see we are in a bit of a dilemma here: if we redo the variant calling
 
 - **Ignore the issue and just do the filtering for the subset as we would do for the complete dataset**
 
-This would be the obvious way to go if you recalled your VCF for subsets of data. If you subset your raw VCF the question would be to what degree using INFO stats from the multiallelic sites for diploids would bias your filtering. 
-
-
+This would be the obvious way to go if you recalled your VCF for subsets of data. If you subset your raw VCF the question would be to what degree using INFO stats from the multiallelic sites for diploids would bias your filtering. After all we don't gain anything if we recover variants by subsetting and then discard the recovered variants again in the follow up filtering, because the INFO stats based on multi-allelic sites don't make the filtering thresholds. However, I don't know how big this issue would be so this **would have to be tested**.
 
 - **Not use INFO stats for filtering**
 
+While using the [GATK best practices filtering thresholds](https://gatk.broadinstitute.org/hc/en-us/articles/360035890471-Hard-filtering-germline-short-variants) are a kind of standard commonly applied to non-model species, this is far from ideal. These threshold were developed for human data, and besides a number of other shortcomings humans are boring diploids. I think that for most species these thresholds may be overly conservative and remove quite a lot of sites, which may be true positives. This may be alleviated to some degree by [looking at ts/tv plots and adjusting thresholds manually](https://github.com/jgerchen/polyploid_popgen/tree/main/tstv_plot), which may improve recovery of sites substantially, or if training data are available machine learning approaches like [VQSR](https://gatk.broadinstitute.org/hc/en-us/articles/360035531612-Variant-Quality-Score-Recalibration-VQSR) could be used.
+
+However, all of this is not useful for subsets of data and the question is if you would introduce too strong biases if you did not use INFO scores for filtering at all. I think for many analyses this may actually be the better choice. After all most false positives are going to be due to sequencing errors, which will be at low frequencies, which in turn are expected to have little effect on statistics like FST. Furthermore, many of these errors will be at low coverage sites which will already be removed by depth-filtering genotypes. In the end the question would be how the higher number of recovered sites would balance against the introduced number of false positives, which is very difficult to answer empirically.
+
 - **Filter only sites that were biallelic in the complete dataset based on INFO scores and do something else for the recovered sites**
 
+This may sound like the goldilocks option, but it would also imply that the two classes of sites are treated differently, which may not be ideal. Also it would require some additional steps for subsetting datasets, but this should be doable with some fiddling with bcftools.
