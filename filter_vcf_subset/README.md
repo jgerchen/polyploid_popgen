@@ -91,6 +91,17 @@ And now we have our properly subset vcf file on which we can run further filteri
 
 - Your INFO stats will not accurately reflect information for your recovered sites (which were the reason why you did the subsetting in the first place)
 
+## How to filter
+
+As you can see we are in a bit of a dilemma here: if we redo the variant calling for subsets of data our INFO stats may be less informative in general, while if we subset our raw VCF our INFO stats will be accurate for biallelic SNPs, but maybe not useful for the multi-allelic sites we wanted to recover in the first place. So what can we do?
+
+- **Ignore the issue and just do the filtering for the subset as we would do for the complete dataset**
+
+This would be the obvious way to go if you recalled your VCF for subsets of data. If you subset your raw VCF the question would be to what degree using INFO stats from the multiallelic sites for diploids would bias your filtering. 
 
 
+
+- **Not use INFO stats for filtering**
+
+- **Filter only sites that were biallelic in the complete dataset based on INFO scores and do something else for the recovered sites**
 
