@@ -41,6 +41,45 @@ bcftools view -S subset_samples.list -o raw_vcf_subset.vcf.gz -O z raw_vcf.vcf.g
 
 Here **subset_samples.list** is a simple text file containing the names of the samples (must be the same as in the VCF header) that we want to keep for our subset. An example can be found [here](alnus_samples.list).
 
+If we work with polyploids, we have to fix the header of our VCF file or bcftools will crash at the following steps.
+
+First we extract the VCF header
+
+```
+bcftools view -h raw_vcf_subset.vcf.gz > raw_vcf_subset.header
+```
+
+Then we use sed to replace some text in the header
+
+```
+sed -i s/ID=PL,Number=G/ID=PL,Number=./g raw_vcf_subset.header
+```
+
+Then we use bcftools to make a new VCF file with the updated header (called raw_vcf_subset.**rh**.vcf.gz).
+
+```
+bcftools reheader -h raw_vcf_subset.header -o raw_vcf_subset.rh.vcf.gz raw_vcf_subset.vcf.gz 
+```
+
+Now we fixed our VCF file for the next steps. If we want to filter individual genotypes by depth now would be a good point to do that.
+
+```
+bcftools filter -O z -o raw_vcf_subset.rh.gtdepth.vcf.gz  -i 'FMT/DP>4' --set-GTs . raw_vcf_subset.rh.vcf.gz 
+```
+
+This will replace all genotypes that are covered by four reads or less to no-call and create a new VCF file called raw_vcf_subset.rh.**gtdepth**.vcf.gz .
+
+Now we can run the magic bcftools command that will look at the REF and ALT columns in our VCF file and only retain alleles that are found in our dataset. So it will remove all alleles that are not found in our subset, including those that got removed by depth filtering of genotypes in the previous step.
+
+```
+bcftools view -a -o raw_vcf_subset.rh.gtdepth.sub.vcf.gz raw_vcf_subset.rh.gtdepth.vcf.gz
+```
+
+And now we have our properly subset vcf file on which we can run further filtering steps. 
+
+
+
+
 
 **Pros**:
 
