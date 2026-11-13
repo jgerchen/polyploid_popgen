@@ -30,24 +30,22 @@ If you are interested in multiple subsets of your data you could just do the var
 
 ### Filtering the raw VCF file based on all your data
 
+Another option when working with subsets of data is to use the raw unfiltered VCF file based on your complete dataset and then subset it and filter data for your subsets. Generally all of this can be done using bcftools, but there are some fixes we have to apply when working with mixed-ploidy datasets. I describe the basic steps and bcftools commands below:
+
+We start by subsetting our raw VCF file using bcftools
 
 
+```
+bcftools view -S subset_samples.list -o raw_vcf_subset.vcf.gz -O z raw_vcf.vcf.gz
+```
+
+Here **subset_samples.list** is a simple text file containing the names of the samples (must be the same as in the VCF header) that we want to keep for our subset. An example can be found [here](alnus_samples.list).
 
 
+**Pros**:
 
+- You don't have to redo the variant calling!
 
+- Your INFO stats will reflect information from your complete dataset.
 
-
-
-
-
-
-
-
-
-
-Pros:
-
-You don't have to redo the variant calling!
-
-Cons:
+**Cons**:
