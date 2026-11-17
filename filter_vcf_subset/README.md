@@ -104,8 +104,10 @@ One way to test the effect of recovered multiallelic site on INFO stats could be
 To do that it would be necessary to first [make ts/tv plots ](https://github.com/jgerchen/polyploid_popgen/tree/main/tstv_plot) for the complete raw VCF file. Then do the filtering steps above, but not on the complete the dataset but on a filtered VCF file containing only multiallelic sites. You can do that using bcftools with the following command
 
 ```
-bcftools view -m 3 -o raw_vcf_nultiallelic.vcf.gz -O z raw_vcf.vcf.gz
+bcftools view -m 3 -o raw_vcf_multiallelic.vcf.gz -O z raw_vcf.vcf.gz
 ```
+
+And [make ts/tv plots ](https://github.com/jgerchen/polyploid_popgen/tree/main/tstv_plot) for the filtered VCF as well. 
 
 - **Not use INFO stats for filtering**
 
